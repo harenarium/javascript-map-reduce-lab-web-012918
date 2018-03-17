@@ -9000,3 +9000,53 @@ const issues = [
     "url": "https://api.github.com/repos/learn-co-curriculum/js-donut-lab/issues/2"
   }
 ];
+
+
+
+
+const issuesWithUpdatedApiUrl = issues.map((issue) => {
+  return Object.assign({}, issue, {url: issue.url.replace("api.github.com", "api-v2.github.com")})
+});
+// return the mapped issues array, replacing any mention of 'api.github.com' (in issue.url) with 'api-v2.github.com'
+// Make sure you dont modify the original objects in the issues array
+
+
+const commentCountAcrossIssues = issues.map((issue) => {return issue.comments_count}).reduce((agg, count)=>{return agg + count},0)
+// lets sum up all comments of every issue.
+// First, map the issues array and pull out the comments_count, to make things easier
+// Next, reduce the array of comment counts and add them all together
+// Feel free to chain these operations on the issues array for brevity — no need for a temporary variable!
+
+
+const openIssues = issues.reduce((agg, issue)=>{
+  if (issue.state === "open"){
+    return [...agg, issue]
+  } else {
+    return agg
+  }
+},[])
+// This new array should only contain issues where issue.state is set to 'open'
+
+
+const nonAutomaticIssues = issues.reduce((agg, issue)=>{
+  if ( issue.body === "This pull request has been automatically created by learn.co."){
+    return agg
+  } else {
+    return [...agg, issue]
+  }
+},[])
+
+nonAutomaticIssues.map(issue => {
+  let table = document.querySelector("table tbody")
+
+  let row = table.insertRow(table.rows.length - 1)
+
+  let cell1 = row.insertCell(0);
+  let cell2 = row.insertCell(1);
+  let cell3 = row.insertCell(2)
+
+  cell1.innerHTML = issue.body;
+  cell2.innerHTML = issue.created_at;
+  cell3.innerHTML = issue.state
+
+})
